@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Annotation Tool</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+    <h1>Video Annotation Tool</h1>
+    <div class="container">
+        <div id="upload-area" class="upload-area">
+            <p>Drag and drop your video here</p>
+            <p>or</p>
+            <input type="file" id="file-input" accept="video/*" class="hidden">
+            <button id="choose-button">Choose File</button>
+        </div>
+        
+        <div id="player-container" class="player-container hidden">
+            <div class="main-content">
+                <div class="player-row">
+                    <div class="video-container">
+                        <video id="video-player" controls>
+                            Your browser does not support the video element.
+                        </video>
+                    </div>
+                    <div class="sidebar">
+                        <h3>Annotations</h3>
+                        <div id="annotation-list">
+                            <!-- Annotations will be added here dynamically -->
+
+                            <!-- Rest of annotations will be added after this -->
+                        </div>
+                        <div class="annotation-item finish-button" id="finish-annotation" title="Finish annotation (Return)">
+                            <span>Finish (return)</span>
+                            <span class="color-dot" style="background-color: #666"></span>
+                        </div>
+                        <button id="add-annotation" class="add-button">+ Add Annotation</button>
+                    </div>
+                </div>
+                <div class="timeline-container">
+                    <div id="timeline-marker" class="timeline-marker"></div>
+                    <div id="timeline" class="timeline"></div>
+                </div>
+            </div>
+            <div class="tables-container">
+                <table id="summary-table" class="annotation-table">
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Total Time</th>
+                            <th>Percentage</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+                <h3>Details</h3>
+                <table id="annotation-table" class="annotation-table">
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Start Time</th>
+                            <th>End Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+                <button id="export-csv" class="export-button">Export to CSV</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for adding new annotations -->
+    <div id="annotation-modal" class="modal hidden">
+        <div class="modal-content">
+            <h3>Add New Annotation</h3>
+            <input type="text" id="annotation-text" placeholder="Annotation text">
+            <input type="text" id="annotation-key" placeholder="Key binding" maxlength="1">
+            <input type="color" id="annotation-color">
+            <div class="modal-buttons">
+                <button id="modal-cancel">Cancel</button>
+                <button id="modal-save">Save</button>
+            </div>
+        </div>
+    </div>
+    <script src="main.js"></script>
+</body>
+</html> 
