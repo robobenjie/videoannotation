@@ -220,8 +220,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const progress = (videoPlayer.currentTime / videoPlayer.duration) * 100;
             timeline.style.width = `${progress}%`;
             timelineMarker.style.left = `${progress}%`;
+            updateActiveAnnotation();
         }
-        updateActiveAnnotation();
     });
 
     // Update the timeline hover preview
@@ -251,6 +251,10 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 videoPlayer.currentTime = target;
             }
+            // Update timeline visuals without affecting annotation
+            const progress = (videoPlayer.currentTime / videoPlayer.duration) * 100;
+            timeline.style.width = `${progress}%`;
+            timelineMarker.style.left = `${progress}%`;
             setTimeout(() => {scrubbed = false;}, scrubMinTime);
         }
     });
@@ -269,13 +273,15 @@ document.addEventListener('DOMContentLoaded', () => {
     timelineContainer.addEventListener('click', (e) => {
         const rect = timelineContainer.getBoundingClientRect();
         const pos = (e.clientX - rect.left) / rect.width;
-        target = pos * videoPlayer.duration;
+        let target = pos * videoPlayer.duration;
         if (shiftDown) {
             let delta = target - shiftStartPos;
             videoPlayer.currentTime = shiftStartPos + delta / 10;
         } else {
             videoPlayer.currentTime = target;
         }
+        
+        // Update the original time to the clicked position
         originalTime = videoPlayer.currentTime;
         isDragging = false;
         
@@ -283,6 +289,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const progress = (videoPlayer.currentTime / videoPlayer.duration) * 100;
         timeline.style.width = `${progress}%`;
         timelineMarker.style.left = `${progress}%`;
+        
+        // Update active annotation if one exists
+        if (activeAnnotation) {
+            if (videoPlayer.currentTime < activeAnnotation.start) {
+                activeAnnotation.end = activeAnnotation.start;
+                activeAnnotation.start = videoPlayer.currentTime;
+            } else {
+                activeAnnotation.end = videoPlayer.currentTime;
+            }
+            updateActiveAnnotationVisual();
+        }
         
         // Stay in hover mode but update originalTime to new position
         isHovering = true;
